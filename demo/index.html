@@ -22,8 +22,13 @@
       <h3>Basic monopoly-trans-cash demo</h3>
       <demo-snippet>
         <template>
-          <monopoly-trans-cash></monopoly-trans-cash>
+          <monopoly-trans-cash id="transaction"></monopoly-trans-cash>
         </template>
+        <script>
+          const transaction = document.getElementById('transaction');
+          const cashTransaction = (event) => {console.log(event.detail)}
+          transaction.addEventListener('cash-transaction', cashTransaction);
+        </script>
       </demo-snippet>
     </div>
   </body>

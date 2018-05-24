@@ -34,7 +34,18 @@
         font-size: 15px;
         font-weight: bold;
         margin: 15px 10px;
-        line-height: 20px;
+        line-height: 25px;
+      }
+      #toError {
+        margin-bottom: 0;
+        color: red;
+      }
+      #amountError {
+        margin-bottom: 0;
+        color: red;
+      }
+      .hide{
+        display: none;
       }
     </style>
     <div class="card">
@@ -44,6 +55,7 @@
           <span>from: [[from.alias]]</span>
           <span>amount: $ [[amount]]</span>
       </div>
+      <P id="toError">Elige un destinatario del déposito</P>
       <paper-dropdown-menu noink no-animations Label="transfer to">
         <paper-listbox
           slot="dropdown-content"
@@ -55,8 +67,9 @@
         </paper-listbox>
       </paper-dropdown-menu>
       <paper-input class="custom" label="transfer from" value="{{from.alias}}" disabled></paper-input>
+      <p id="amountError">El valor debe ser numerico y diferente a 0</p>
       <paper-input label="amount" value="{{amount}}"></paper-input>
-      <paper-button class="button__green" role="button" tabindex="0"  elevation="0" aria-disabled="false">Do transaction</paper-button>
+      <paper-button on-click="doTransaction" class="button__green" role="button" tabindex="0"  elevation="0" aria-disabled="false">Do transaction</paper-button>
     </div>
   </template>
 
@@ -114,6 +127,12 @@
         this.playerSelectedText = '';
         this.amount = 0;
       }
+      connectedCallback() {
+        super.connectedCallback();
+        // hide errors
+        this.$.toError.classList.add('hide');
+        this.$.amountError.classList.add('hide');
+      }
       requestTo() {
         console.log(this.playerSelected);
         for (let object of this.to) {
@@ -123,8 +142,31 @@
             }
           }
         }
-        //console.log(this.playerSelected);
-        //console.log(this.playerSelectedText);
+      }
+      doTransaction(event) {
+        if (!this.playerSelected) {
+          this.$.toError.classList.remove('hide');
+        }
+        else if (parseInt(this.amount)===0 || isNaN(parseInt(this.amount))) {
+          this.$.amountError.classList.remove('hide');
+          this.$.toError.classList.add('hide');
+        }
+        else {
+          this.detail['to'] = this.playerSelected;
+          this.detail['from'] = this.from.id;
+          this.detail['amount'] = parseInt(this.amount);
+          this.dispatchEvent(new CustomEvent('cash-transaction', {
+            bubles: true,
+            composed: true,
+            detail: this.detail
+          }));
+          this.playerSelected = "";
+          this.playerSelectedText = "";
+          this.amount = 0;
+          // hide errors
+          this.$.toError.classList.add('hide');
+          this.$.amountError.classList.add('hide');
+        }
       }
     }
 
