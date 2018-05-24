@@ -1,0 +1,40 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<dom-module id="monopoly-trans-cash">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+    <paper-input placeholder="hola-mundo"></paper-input>
+    <paper-button>Hola</paper-button>
+  </template>
+
+  <script>
+    /**
+     * `monopoly-trans-cash`
+     *
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class MonopolyTransCash extends Polymer.Element {
+      static get is() { return 'monopoly-trans-cash'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'monopoly-trans-cash'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(MonopolyTransCash.is, MonopolyTransCash);
+  </script>
+</dom-module>
