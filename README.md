@@ -35,7 +35,8 @@ like this:
 ]
 ```
 if we named this json users the tag will be:
-**\<monopoly-trans-cash to="{{users}}"\>**
+
+**\<monopoly-trans-cash to="{{users}}"\>\</monopoly-trans-cash\>**
 
 * second parameter is from that received a json like this:
 
@@ -48,7 +49,8 @@ if we named this json users the tag will be:
   }
 ```
 then if we named loggedUser to json the tag with parameters must be like this:
-**\<monopoly-trans-cash to="{{users}}" from="{{loggedUser}}"\>**
+
+**\<monopoly-trans-cash to="{{users}}" from="{{loggedUser}}"\>\</monopoly-trans-cash\>****
 
 ### For receive detail of doTransactio
 
