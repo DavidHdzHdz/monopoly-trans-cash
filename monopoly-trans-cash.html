@@ -1,9 +1,11 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-item/paper-item.html">
+
 
 <dom-module id="monopoly-trans-cash">
   <template>
@@ -44,18 +46,23 @@
         margin-bottom: 0;
         color: red;
       }
-      .hide{
+      .hide {
         display: none;
+      }
+      .dialog {
+        border: 2px solid rgba(100, 255, 50, 0.9);
+        background-color: #eee;
+        color: rgba(100, 255, 50, 0.9);
       }
     </style>
     <div class="card">
-      <h2>Transfer detail</h2>
+      <h2>Detalles de la transferencia</h2>
       <div class="detail">
           <span>to: [[playerSelectedText]]</span>
           <span>from: [[from.alias]]</span>
           <span>amount: $ [[amount]]</span>
       </div>
-      <P id="toError">Elige un destinatario del déposito</P>
+      <P id="toError">Elige un destinatario para el déposito</P>
       <paper-dropdown-menu noink no-animations Label="transfer to">
         <paper-listbox
           slot="dropdown-content"
@@ -71,6 +78,10 @@
       <paper-input label="amount" value="{{amount}}"></paper-input>
       <paper-button on-click="doTransaction" class="button__green" role="button" tabindex="0"  elevation="0" aria-disabled="false">Do transaction</paper-button>
     </div>
+    <paper-dialog id="toggleDialog" class="dialog">
+      <h2>Se ha enviado tu transferencia</h2>
+      <paper-button on-tap="toggleSuccess">Close</paper-button>
+    </paper-dialog>
   </template>
 
   <script>
@@ -134,7 +145,6 @@
         this.$.amountError.classList.add('hide');
       }
       requestTo() {
-        console.log(this.playerSelected);
         for (let object of this.to) {
           for (let prop in object) {
             if (object[prop]==this.playerSelected) {
@@ -166,7 +176,11 @@
           // hide errors
           this.$.toError.classList.add('hide');
           this.$.amountError.classList.add('hide');
+          this.toggleSuccess();
         }
+      }
+      toggleSuccess() {
+        this.$.toggleDialog.toggle();
       }
     }
 
