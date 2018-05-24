@@ -1,6 +1,9 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
 
 <dom-module id="monopoly-trans-cash">
   <template>
@@ -8,30 +11,120 @@
       :host {
         display: block;
       }
+      .card {
+        margin: 24px;
+        padding: 16px;
+        color: #757575;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+      }
+      .button__green {
+        background-color: #00e600;
+        color: #EEE;
+      }
+      .transfer__from {
+        background-color: #00e600;
+        color: #EEE;
+      }
+      .detail {
+        display: flex;
+        flex-direction: column;
+        text-align: justify;
+        font-size: 15px;
+        font-weight: bold;
+        margin: 15px 10px;
+        line-height: 20px;
+      }
     </style>
-    <h2>Hello [[prop1]]!</h2>
-    <paper-input placeholder="hola-mundo"></paper-input>
-    <paper-button>Hola</paper-button>
+    <div class="card">
+      <h2>Transfer detail</h2>
+      <div class="detail">
+          <span>to: [[playerSelectedText]]</span>
+          <span>from: [[from.alias]]</span>
+          <span>amount: $ [[amount]]</span>
+      </div>
+      <paper-dropdown-menu noink no-animations Label="transfer to">
+        <paper-listbox
+          slot="dropdown-content"
+          attr-for-selected="selected-item"
+          selected="{{playerSelected}}">
+          <template is="dom-repeat" items="[[to]]" as="tranferTo">
+            <paper-item selected-item="[[tranferTo.id]]">[[tranferTo.alias]]</paper-item>
+          </template>
+        </paper-listbox>
+      </paper-dropdown-menu>
+      <paper-input class="custom" label="transfer from" value="{{from.alias}}" disabled></paper-input>
+      <paper-input label="amount" value="{{amount}}"></paper-input>
+      <paper-button class="button__green" role="button" tabindex="0"  elevation="0" aria-disabled="false">Do transaction</paper-button>
+    </div>
   </template>
 
   <script>
-    /**
-     * `monopoly-trans-cash`
-     *
-     *
-     * @customElement
-     * @polymer
-     * @demo demo/index.html
-     */
     class MonopolyTransCash extends Polymer.Element {
       static get is() { return 'monopoly-trans-cash'; }
       static get properties() {
         return {
-          prop1: {
+          to: {
+            type: Object,
+          },
+          from: {
+            type: Object,
+          },
+          amount: {
+            type: Number,
+          },
+          playerSelected: {
             type: String,
-            value: 'monopoly-trans-cash'
+            reflectToAttribute: true,
+            observer: 'requestTo'
+          },
+          playerSelectedText: {
+            type: String,
+          },
+          detail: {
+            Object,
           }
         };
+      }
+      constructor() {
+        super();
+        this.to = [
+          {
+            'id' : 'PABCDEF002',
+            'alias' : 'userDefault1',
+            'amount' : 10000,
+            'status' : 'playing'
+          },
+          {
+            'id' : 'PABCDEF003',
+            'alias' : 'userDefault2',
+            'amount' : 10000,
+            'status' : 'playing'
+          }
+        ];
+        this.from = {
+          'id': 'PABCDEF001',
+          'alias': 'yourUserDefaultName',
+          'amount': 0,
+          'status': "ready"
+        };
+        this.detail = {};
+        this.playerSelected = '';
+        this.playerSelectedText = '';
+        this.amount = 0;
+      }
+      requestTo() {
+        console.log(this.playerSelected);
+        for (let object of this.to) {
+          for (let prop in object) {
+            if (object[prop]==this.playerSelected) {
+              this.playerSelectedText = object.alias;
+            }
+          }
+        }
+        //console.log(this.playerSelected);
+        //console.log(this.playerSelectedText);
       }
     }
 
