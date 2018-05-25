@@ -28,16 +28,21 @@
             elementShadowDom = element.shadowRoot;
         });
 
-        test('Button is disable at initialize the component', () => {
-            const disabledStatus = elementShadowDom.querySelector('#transferButton').getAttribute('disabled');
-            assert.strictEqual(disabledStatus, 'true');
+        test('No player selected', () => {
+
+            const button = elementShadowDom.querySelector('#transferButton');
+            button.click();
+            const classList = elementShadowDom.querySelector('#toError').classList.length;
+            assert.strictEqual(classList, 0);
         });
 
-        test('Button is able to post the transaction', () => {
+        test('Player selected but No numeric amount registered', () => {
             const listbox=elementShadowDom.querySelector('#listbox');
             listbox.setAttribute('selected','PABCDEF002');
-            const disabledStatus = elementShadowDom.querySelector('#transferButton').hasAttribute('disabled');
-            assert.strictEqual(disabledStatus, false);
+            const button = elementShadowDom.querySelector('#transferButton');
+            button.click();
+            const classList = elementShadowDom.querySelector('#amountError').classList.length;
+            assert.strictEqual(classList, 0);
         });
 
 
