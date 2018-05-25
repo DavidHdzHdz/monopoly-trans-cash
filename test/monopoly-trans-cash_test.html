@@ -28,6 +28,19 @@
             elementShadowDom = element.shadowRoot;
         });
 
+        test('Button is disable at initialize the component', () => {
+            const disabledStatus = elementShadowDom.querySelector('#transferButton').getAttribute('disabled');
+            assert.strictEqual(disabledStatus, 'true');
+        });
+
+        test('Button is able to post the transaction', () => {
+            const listbox=elementShadowDom.querySelector('#listbox');
+            listbox.setAttribute('selected','PABCDEF002');
+            const disabledStatus = elementShadowDom.querySelector('#transferButton').hasAttribute('disabled');
+            assert.strictEqual(disabledStatus, false);
+        });
+
+
         test('checking the result of transaction posting', () => {
           document.addEventListener('cash-transaction', (event)=>{
             const result=event.detail;
