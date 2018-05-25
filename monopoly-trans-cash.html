@@ -67,7 +67,8 @@
         <paper-listbox
           slot="dropdown-content"
           attr-for-selected="selected-item"
-          selected="{{playerSelected}}">
+          selected="{{playerSelected}}"
+          id="listbox">
           <template is="dom-repeat" items="[[to]]" as="tranferTo">
             <paper-item selected-item="[[tranferTo.id]]">[[tranferTo.alias]]</paper-item>
           </template>
@@ -75,8 +76,8 @@
       </paper-dropdown-menu>
       <paper-input class="custom" label="transfer from" value="{{from.alias}}" disabled></paper-input>
       <p id="amountError">El valor debe ser numerico y diferente a 0</p>
-      <paper-input label="amount" value="{{amount}}"></paper-input>
-      <paper-button on-click="doTransaction" class="button__green" role="button" tabindex="0"  elevation="0" aria-disabled="false">Do transaction</paper-button>
+      <paper-input label="amount" value="{{amount}}" id="cashInput"></paper-input>
+      <paper-button id="transferButton" on-click="doTransaction" class="button__green" role="button" tabindex="0"  elevation="0" aria-disabled="false">Do transaction</paper-button>
     </div>
     <paper-dialog id="toggleDialog" class="dialog">
       <h2>Se ha enviado tu transferencia</h2>
@@ -89,11 +90,15 @@
       static get is() { return 'monopoly-trans-cash'; }
       static get properties() {
         return {
-          to: {
-            type: Object,
+          to:{
+            type: Array,
+            value:[],
+            reflectToAttribute: true,
           },
           from: {
             type: Object,
+            value:{},
+            reflectToAttribute: true,
           },
           amount: {
             type: Number,
@@ -113,26 +118,6 @@
       }
       constructor() {
         super();
-        this.to = [
-          {
-            'id' : 'PABCDEF002',
-            'alias' : 'userDefault1',
-            'amount' : 10000,
-            'status' : 'playing'
-          },
-          {
-            'id' : 'PABCDEF003',
-            'alias' : 'userDefault2',
-            'amount' : 10000,
-            'status' : 'playing'
-          }
-        ];
-        this.from = {
-          'id': 'PABCDEF001',
-          'alias': 'yourUserDefaultName',
-          'amount': 0,
-          'status': "ready"
-        };
         this.detail = {};
         this.playerSelected = '';
         this.playerSelectedText = '';
@@ -144,14 +129,18 @@
         this.$.toError.classList.add('hide');
         this.$.amountError.classList.add('hide');
       }
+
       requestTo() {
-        for (let object of this.to) {
-          for (let prop in object) {
-            if (object[prop]==this.playerSelected) {
-              this.playerSelectedText = object.alias;
+        if (this.to!==null){
+          for (let object of this.to) {
+            for (let prop in object) {
+              if (object[prop]==this.playerSelected) {
+                this.playerSelectedText = object.alias;
+              }
             }
           }
         }
+
       }
       doTransaction(event) {
         if (!this.playerSelected) {

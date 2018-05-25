@@ -15,34 +15,50 @@
 
     <test-fixture id="BasicTestFixture">
       <template>
-        <monopoly-trans-cash></monopoly-trans-cash>
-      </template>
-    </test-fixture>
-
-    <test-fixture id="ChangedPropertyTestFixture">
-      <template>
-        <monopoly-trans-cash prop1="new-prop1"></monopoly-trans-cash>
+        <monopoly-trans-cash to='[{"id" : "PABCDEF002","alias" : "customUser1","amount" : 10000,"status" : "playing"},{"id" : "PABCDEF003","alias" : "customUser2","amount" : 10000,"status" : "playing"}]'
+                            from ='{"id": "PABCDEF001","alias": "yourUserDefaultName2","amount": 0,"status": "ready"}'></monopoly-trans-cash>
       </template>
     </test-fixture>
 
     <script>
       suite('monopoly-trans-cash', () => {
 
-        test('instantiating the element with default properties works', () => {
-          const element = fixture('BasicTestFixture');
-          assert.equal(element.prop1, 'monopoly-trans-cash');
-          const elementShadowRoot = element.shadowRoot;
-          const elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello monopoly-trans-cash!');
+        setup(function () {
+            element = fixture('BasicTestFixture');
+            elementShadowDom = element.shadowRoot;
         });
 
-        test('setting a property on the element works', () => {
-          // Create a test fixture
-          const element = fixture('ChangedPropertyTestFixture');
-          assert.equal(element.prop1, 'new-prop1');
-          const elementShadowRoot = element.shadowRoot;
-          const elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello new-prop1!');
+        test('No player selected', () => {
+
+            const button = elementShadowDom.querySelector('#transferButton');
+            button.click();
+            const classList = elementShadowDom.querySelector('#toError').classList.length;
+            assert.strictEqual(classList, 0);
+        });
+
+        test('Player selected but No numeric amount registered', () => {
+            const listbox=elementShadowDom.querySelector('#listbox');
+            listbox.setAttribute('selected','PABCDEF002');
+            const button = elementShadowDom.querySelector('#transferButton');
+            button.click();
+            const classList = elementShadowDom.querySelector('#amountError').classList.length;
+            assert.strictEqual(classList, 0);
+        });
+
+
+        test('checking the result of transaction posting', () => {
+          document.addEventListener('cash-transaction', (event)=>{
+            const result=event.detail;
+            assert.deepEqual(result,
+              {to: "PABCDEF003", from: "PABCDEF001", amount: 5000});
+          });
+          const listbox=elementShadowDom.querySelector('#listbox');
+          listbox.setAttribute('selected','PABCDEF002');
+          const cashInput=elementShadowDom.querySelector('#cashInput');
+          cashInput.value=5000;
+          const button = elementShadowDom.querySelector('#transferButton');
+          button.click();
+
         });
 
       });

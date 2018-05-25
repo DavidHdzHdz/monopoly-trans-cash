@@ -11,7 +11,6 @@
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../monopoly-trans-cash.html">
-    <link rel="import" href="../paper-dialog/paper-dialog.html">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -27,13 +26,45 @@
     <div class="vertical-section-container centered">
       <h3>Basic monopoly-trans-cash demo</h3>
       <demo-snippet>
-        <template>
-          <monopoly-trans-cash id="transaction"></monopoly-trans-cash>
-        </template>
+        <dom-bind>
+          <template>
+            <monopoly-trans-cash id="transaction"
+            to="[[to]]"
+            from ="[[from]]"
+            is-visible="[[isVisible]]"
+            ></monopoly-trans-cash>
+          </template>
+        </dom-bind>
         <script>
           const transaction = document.getElementById('transaction');
+          const container = document.querySelector('dom-bind');
           const cashTransaction = (event) => {console.log(event.detail)}
           transaction.addEventListener('cash-transaction', cashTransaction);
+          container.from = {
+            "id": "PABCDEF001",
+            "alias": "yourUserDefaultName2",
+            "amount": 0,
+            "status": "ready"
+          };
+          container.to = [
+            {"id" : "PABCDEF002","alias" : "customUser1","amount" : 10000,"status" : "playing"},
+            {"id" : "PABCDEF003","alias" : "customUser2","amount" : 10000,"status" : "playing"}
+          ];
+          container.isVisible = true;
+          setTimeout(() => {
+            container.to = [
+              {"id" : "PABCDEF002","alias" : "customUser1","amount" : 10000,"status" : "playing"},
+              {"id" : "PABCDEF003","alias" : "customUser2","amount" : 10000,"status" : "playing"},
+              {"id" : "PABCDEF004","alias" : "customUser3","amount" : 20000,"status" : "playing"}
+            ];
+            container.from = {
+              "id": "PABCDEF005",
+              "alias": "yourUserName",
+              "amount": 200,
+              "status": "ready"
+            };
+          },5000);
+
         </script>
       </demo-snippet>
     </div>
