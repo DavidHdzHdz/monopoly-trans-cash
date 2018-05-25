@@ -11,7 +11,6 @@
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../monopoly-trans-cash.html">
-    <link rel="import" href="../paper-dialog/paper-dialog.html">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -28,7 +27,9 @@
       <h3>Basic monopoly-trans-cash demo</h3>
       <demo-snippet>
         <template>
-          <monopoly-trans-cash id="transaction"></monopoly-trans-cash>
+          <monopoly-trans-cash id="transaction"
+            to='[{"id" : "PABCDEF002","alias" : "customUser1","amount" : 10000,"status" : "playing"},{"id" : "PABCDEF003","alias" : "customUser2","amount" : 10000,"status" : "playing"}]'
+            from ='{"id": "PABCDEF001","alias": "yourUserDefaultName2","amount": 0,"status": "ready"}'  ></monopoly-trans-cash>
         </template>
         <script>
           const transaction = document.getElementById('transaction');
