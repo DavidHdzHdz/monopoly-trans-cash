@@ -92,10 +92,13 @@
         return {
           to:{
             type: Array,
-            value:[]
+            value:[],
+            reflectToAttribute: true,
           },
           from: {
             type: Object,
+            value:{},
+            reflectToAttribute: true,
           },
           amount: {
             type: Number,
