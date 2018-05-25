@@ -13,6 +13,9 @@
       :host {
         display: block;
       }
+
+      .rate-name { color: var(--paper-grey-600); margin: 10px 0; }
+
       .card {
         margin: 24px;
         padding: 16px;
@@ -22,11 +25,14 @@
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
       }
       .button__green {
-        background-color: #00e600;
+        background-color: #4CBB17;
         color: #EEE;
+        padding:10px 20px;
+        border:1px solid #ccc;
+        border-radius: 5px;
       }
       .transfer__from {
-        background-color: #00e600;
+        background-color: #4CBB17;
         color: #EEE;
       }
       .detail {
@@ -50,20 +56,20 @@
         display: none;
       }
       .dialog {
-        border: 2px solid rgba(100, 255, 50, 0.9);
+        border: 2px solid #4CBB17;
         background-color: #eee;
-        color: rgba(100, 255, 50, 0.9);
+        color: #4CBB17;
       }
     </style>
-    <div class="card">
+
       <h2>Detalles de la transferencia</h2>
       <div class="detail">
-          <span>to: [[playerSelectedText]]</span>
-          <span>from: [[from.alias]]</span>
-          <span>amount: $ [[amount]]</span>
+          <span>a: [[playerSelectedText]]</span>
+          <span>de: [[from.alias]]</span>
+          <span>cantidad: $ [[amount]]</span>
       </div>
-      <P id="toError">Elige un destinatario para el déposito</P>
-      <paper-dropdown-menu noink no-animations Label="transfer to">
+      <P id="toError">Elige un destinatario para el depósito</P>
+      <paper-dropdown-menu noink no-animations Label="Transferir a:">
         <paper-listbox
           slot="dropdown-content"
           attr-for-selected="selected-item"
@@ -74,14 +80,14 @@
           </template>
         </paper-listbox>
       </paper-dropdown-menu>
-      <paper-input class="custom" label="transfer from" value="{{from.alias}}" disabled></paper-input>
+      <paper-input class="custom" label="Transferir de:" value="{{from.alias}}" disabled></paper-input>
       <p id="amountError">El valor debe ser numerico y diferente a 0</p>
-      <paper-input label="amount" value="{{amount}}" id="cashInput"></paper-input>
-      <paper-button id="transferButton" on-click="doTransaction" class="button__green" role="button" tabindex="0"  elevation="0" aria-disabled="false">Do transaction</paper-button>
-    </div>
+      <paper-input label="Cantidad:" value="{{amount}}" id="cashInput"></paper-input>
+      <paper-button id="transferButton" on-click="doTransaction" class="button__green" role="button" tabindex="0"  elevation="0" aria-disabled="false">Transferir</paper-button>
+
     <paper-dialog id="toggleDialog" class="dialog">
       <h2>Se ha enviado tu transferencia</h2>
-      <paper-button on-tap="toggleSuccess">Close</paper-button>
+      <paper-button on-tap="toggleSuccess">Cerrar</paper-button>
     </paper-dialog>
   </template>
 
